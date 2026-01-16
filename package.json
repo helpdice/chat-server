@@ -25,6 +25,7 @@
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.7",
+    "nodemon": "^3.1.11",
     "peer": "^0.6.1",
     "redis": "^5.1.0",
     "socket.io": "^4.7.5",
