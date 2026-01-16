@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const rateLimiter = require('./middlewares/rateLimiter');
 const cors = require('cors');
 
-dotenv.config({ path: path.resolve(__dirname, 'config', 'config.env') });
+dotenv.config(); // { path: path.resolve(__dirname, 'config', 'config.env') }
 const app = express();
 
 var whitelist = ['http://192.168.43.201:3000', 'http://10.0.2.2:5000', 'http://localhost:3001', 'https://192.168.43.201:5173', 'http://localhost:5173'];
@@ -32,6 +32,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 //handling all rountes here
+app.get("/", (req, res) => {
+  res.send("Render Express app is live 🚀");
+});
+
 const routeHandler = require('./routes/routes');
 app.use('/api', routeHandler);
 
@@ -76,7 +80,7 @@ var options = {
 app.use('/peerjs', ExpressPeerServer(server, options));
 
 //strarting server
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT || 5000, () => {
     console.log(`server listeneing on port ${process.env.PORT} in ${process.env.MODE} mode`);
 });
 
