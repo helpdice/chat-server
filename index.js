@@ -8,7 +8,7 @@ const cors = require('cors');
 dotenv.config(); // { path: path.resolve(__dirname, 'config', 'config.env') }
 const app = express();
 
-var whitelist = ['http://192.168.43.201:3000', 'http://10.0.2.2:5000', 'http://localhost:3001', 'https://192.168.43.201:5173', 'http://localhost:5173'];
+var whitelist = ['http://192.168.43.201:3000', 'http://10.0.2.2:5000', 'http://localhost:3001', 'https://192.168.43.201:5173', 'http://localhost:5173', 'https://chat-server-g8bt.onrender.com/'];
 
 app.use(rateLimiter);
 app.use(
@@ -49,7 +49,7 @@ connectDB('chatApp');
 
 //setting up http server
 var server;
-if (process.env.mode === 'production') {
+if (process.env.mode === 'development') {
     const http = require('http');
     server = http.Server(app);
 } else {
