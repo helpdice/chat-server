@@ -28,11 +28,11 @@ module.exports.createTokens = async (req, res, next) => {
         const { access_token_secret, access_token, refresh_token_secret, refresh_token } = createTokens(_doc);
 
         const result = await callApi(
-            `${'http://localhost:8000/api/v1/'}/auth/latest_token?username=${_doc.phoneNo}`,
+            `${process.env.HELPDICE_API_URL}/api/v1//auth/latest_token?username=${_doc.phoneNo}`,
             'GET',
             null,
             {
-                'HB-API-KEY': `Bearer ${'ls7g83jmo58z15njsf8'}`
+                'HB-API-KEY': `Bearer ${process.env.HELPDICE_API_KEY}`
             }
         );
 
