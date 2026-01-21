@@ -25,10 +25,14 @@ module.exports.createTokens = async (req, res, next) => {
 
         // console.log(process.env);
 
+        // console.log("Doc", _doc)
+
         const { access_token_secret, access_token, refresh_token_secret, refresh_token } = createTokens(_doc);
 
+        const url = new URL(`${process.env.HELPDICE_API_URL}/api/v1/auth/latest_token`);
+        url.searchParams.append("username", _doc.phoneNo);
         const result = await callApi(
-            `${process.env.HELPDICE_API_URL}/api/v1//auth/latest_token?username=${_doc.phoneNo}`,
+            url,
             'GET',
             null,
             {
@@ -79,9 +83,9 @@ module.exports.deleteTokens = (req, res, next) => {};
 */
 module.exports.login = async (req, res, next) => {
     console.log('Login Request :', req.body);
-    const { phoneNo, password } = req.body;
+    const { username, password, countryCode } = req.body;
     try {
-        const result = await user.findOne({ phoneNo });
+        const result = await user.findOne({ phoneNo: countryCode + "," +username });
         if (result) {
             const passMatch = await bcrypt.compare(password, result.password);
             if (passMatch) {
@@ -97,7 +101,7 @@ module.exports.login = async (req, res, next) => {
             // res.status(400).json({ sucess: false, message: "user doesn't exists" });
         }
     } catch (err) {
-        console.log(err);
+        console.log('Error in Login', err);
         // next({ status: 400, message: err.message, stack: err.stack });
     }
 };

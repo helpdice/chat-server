@@ -18,11 +18,11 @@ const pendingContactsSchema = new mongoose.Schema({
 const eop = ['Everyone', 'Contacts', 'Nobody'];
 
 const userSchema = new mongoose.Schema({
-    userName: {
-        type: String,
-        // required: [true, 'username is required in user model'],
-        unique: true
-    },
+    // userName: {
+    //     type: String,
+    //     // required: [true, 'username is required in user model'],
+    //     // unique: true
+    // },
     name: {
         type: String,
     },

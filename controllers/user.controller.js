@@ -11,15 +11,14 @@ const { uniqueId } = require('lodash');
 module.exports.createUser = async (req, res, next) => {
     try {
         // console.log(req.body);
-        const { userName, name, phoneNo, password, avatar } = Object.keys(req.body)?.length > 0 ? req.body : res.locals;
-        // console.log('Register Body:', userName, name, phoneNo, password);
+        const { username, name, password, avatar, countryCode } = Object.keys(req.body)?.length > 0 ? req.body : res.locals;
+        // console.log('Register Body:', username, name, phoneNo, password);
         // console.log(res.locals);
-        const doesExistsAlready = await user.exists({
-            $or: [{ userName: userName }, { phoneNo: phoneNo }]
-        });
+        const phoneNo = `${countryCode},${username}`;
+        const doesExistsAlready = await user.exists({ phoneNo });
         // console.log('Exists Already :', doesExistsAlready);
         if (doesExistsAlready) {
-            console.log(res.locals);
+            // console.log(res.locals);
             if (Object.keys(res.locals)?.length > 0) {
                 console.log('Locals :', Object.keys(res.locals)?.length > 0);
                 next();
@@ -31,7 +30,7 @@ module.exports.createUser = async (req, res, next) => {
             }
         } else {
             const result = await user.create({ phoneNo, password, dp: avatar });
-            // console.log('Result :', result);
+            console.log('Result :', result);
             res.locals = result;
             next();
         }
@@ -54,6 +53,7 @@ module.exports.updateUser = async (req, res) => {
             status,
             dp,
             bio,
+            name,
             address,
             state,
             city,
@@ -75,6 +75,7 @@ module.exports.updateUser = async (req, res) => {
 
         const updateFields = {
             ...(userName && { userName }),
+            ...(name && { name }),
             ...(status && { status }),
             ...(dp && { dp }),
             ...(bio && { bio }),
